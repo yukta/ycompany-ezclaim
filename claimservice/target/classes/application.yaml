@@ -1,0 +1,13 @@
+server:
+    port: 8080
+
+aws:
+    endpoint: http://localhost:4566
+    region: us-east-1
+
+claims:
+    table: claims
+    topicArn: arn:aws:sns:us-east-1:000000000000:claim-events
+
+documents:
+    bucket: claim-documents

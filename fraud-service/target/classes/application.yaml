@@ -1,0 +1,11 @@
+aws:
+    endpoint: http://localhost:4566
+    region: us-east-1
+
+fraud:
+    queueUrl: http://localhost:4566/000000000000/fraud-queue
+    claimsTable: claims
+
+spring:
+    main:
+        web-application-type: none
