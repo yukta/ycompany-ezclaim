@@ -49,4 +49,16 @@ public class DocumentController {
 
         return documentService.confirmUpload(claimId, payload);
     }
+
+    @GetMapping
+    public Map<String, Object> listDocuments(@PathVariable String claimId) {
+
+        Authorization.require(
+                Role.SURVEYOR,
+                Role.ADMINISTRATOR,
+                Role.CUSTOMER
+        );
+
+        return documentService.listDocuments(claimId);
+    }
 }

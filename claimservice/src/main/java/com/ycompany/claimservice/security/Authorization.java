@@ -5,7 +5,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 public final class Authorization {
 
-    private Authorization() {}
 
     public static void require(Role... allowedRoles) {
 
@@ -29,4 +28,10 @@ public final class Authorization {
                 "Access denied for role: " + current
         );
     }
+
+    public static boolean hasRole(Role role) {
+        Role current = RoleContext.get();
+        return current != null && current == role;
+    }
+
 }

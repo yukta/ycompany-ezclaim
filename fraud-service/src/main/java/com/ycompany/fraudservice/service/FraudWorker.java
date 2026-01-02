@@ -22,6 +22,8 @@ public class FraudWorker {
     private final SqsClient sqs;
     private final DynamoDbClient dynamo;
     private final FraudEngine engine;
+    private final SurveyorAssignmentService assignmentService;
+
 
     @Value("${fraud.queueUrl}")
     private String queueUrl;
@@ -31,10 +33,12 @@ public class FraudWorker {
 
     public FraudWorker(SqsClient sqs,
                        DynamoDbClient dynamo,
-                       FraudEngine engine) {
+                       FraudEngine engine,
+                       SurveyorAssignmentService assignmentService) {
         this.sqs = sqs;
         this.dynamo = dynamo;
         this.engine = engine;
+        this.assignmentService = assignmentService;
     }
 
     @Scheduled(fixedDelay = 3000)
@@ -54,8 +58,14 @@ public class FraudWorker {
         try {
             String body = msg.body();
             String claimId = extractClaimId(body);
-            Thread.sleep(5000); // 5 seconds
 
+            // 1️⃣ Assign surveyor immediately after claim submission
+            assignmentService.assignSurveyor(claimId);
+
+            // 2️⃣ Simulate fraud delay
+            Thread.sleep(5000);
+
+            // 3️⃣ Fraud evaluation (existing logic)
             FraudDecision decision = engine.evaluate(claimId);
             updateClaimStatus(claimId, decision);
 
@@ -63,10 +73,10 @@ public class FraudWorker {
                     .queueUrl(queueUrl)
                     .receiptHandle(msg.receiptHandle()));
         } catch (Exception e) {
-            // log and let message retry
             e.printStackTrace();
         }
     }
+
 
     private void updateClaimStatus(String claimId, FraudDecision decision) {
         log.info("Processing claim: {}", claimId);

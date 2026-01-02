@@ -8,7 +8,19 @@ resource "aws_dynamodb_table" "claims" {
     name = "claimId"
     type = "S"
   }
+
+  attribute {
+    name = "customerId"
+    type = "S"
+  }
+
+  global_secondary_index {
+    name            = "customerId-index"
+    hash_key        = "customerId"
+    projection_type = "ALL"
+  }
 }
+
 
 # SNS – Claim events
 resource "aws_sns_topic" "claim_events" {

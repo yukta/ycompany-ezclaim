@@ -17,6 +17,7 @@ import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignReques
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -88,6 +89,14 @@ public class DocumentService {
                 "objectKey", objectKey,
                 "status", "CONFIRMED",
                 "confirmedAt", Instant.now().toString()
+        );
+    }
+
+    public Map<String, Object> listDocuments(String claimId) {
+
+        return Map.of(
+                "claimId", claimId,
+                "documents", List.of()
         );
     }
 }

@@ -58,6 +58,8 @@ echo "Running Terraform..."
 terraform init -reconfigure
 terraform apply -auto-approve
 
+aws --endpoint-url=http://localhost:4566 --region us-east-1  s3 mb s3://claim-documents
+
 echo "========================================"
 echo " LocalStack bootstrap completed"
 echo "========================================"

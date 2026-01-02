@@ -2,6 +2,7 @@ output "claims_table" {
   value = aws_dynamodb_table.claims.name
 }
 
+
 output "claim_events_topic" {
   value = aws_sns_topic.claim_events.arn
 }

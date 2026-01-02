@@ -11,3 +11,6 @@ claims:
 
 documents:
     bucket: claim-documents
+
+audit:
+    table: audit_logs
